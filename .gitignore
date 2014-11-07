@@ -3,3 +3,4 @@
 .cache
 .settings
 node_modules
+npm-debug.log

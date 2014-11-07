@@ -30,19 +30,27 @@ module.exports = function(options) {
 
     var incoming = file.contents.toString();
 
-    var outgoing = incoming.replace(/url\((.+)\)/g, function (str, dirtyUrl) {
+    var outgoing = incoming.replace(/url\(([^\)]+)\)/g, function (str, dirtyUrl) {
       var url = dirtyUrl.replace(/'|"/g, '').trim();
       var replaceWithStr = null;
       if (url.indexOf("base64,") > -1 || url.indexOf("http://") > -1 ) {
         replaceWithStr = str; // ignoring base64 and external links
       } else {
-        var imagePath = path.join(baseDir, url);
+        var imagePath = null;
+        if(url.indexOf('/') === 0) { // root-relative url
+          imagePath = path.join(baseDir, url);
+        } else { // this path should be threated as relative
+          gutil.log(PLUGIN_NAME + ': Using a relative path in ' + path.basename(file.path) + ": " + url);
+          imagePath = path.resolve(path.dirname(file.path), url);
+        }
+          
 
         try {
           var idata = fs.readFileSync(imagePath);
           replaceWithStr = 'url(' + url + "?v=" + md5ify(idata) + ')';
         } catch(err) {
           replaceWithStr = str;
+          console.dir(file);
           this.emit('error', new gutil.PluginError(PLUGIN_NAME, err, {fileName: file.path}));
         }
       }

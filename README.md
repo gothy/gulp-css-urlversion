@@ -7,6 +7,9 @@ Plugin inlines md5-based version of url() resources in css files to force web br
 
     $ npm install --save-dev gulp-css-urlversion
 
+
+### Usage
+
 Example css/sass source:
 
 ```css

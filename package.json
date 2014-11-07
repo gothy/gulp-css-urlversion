@@ -1,0 +1,29 @@
+{
+  "name": "gulp-css-urlversion",
+  "version": "1.0.0",
+  "description": "A plugin for gulp.js to inline an md5-based version of url() resources in css files.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "gulpplugin",
+    "revision",
+    "assets",
+    "cache",
+    "versioning"
+  ],
+  "author": "Dmitry @gothy Utkin",
+  "license": "MIT",
+  "dependencies": {
+    "gulp-util": "^3.0.1",
+    "through2": "^0.6.3"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gothy/gulp-css-urlversion"
+  }
+}

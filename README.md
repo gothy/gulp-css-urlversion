@@ -55,3 +55,7 @@ gulp.task('sass', function () {
 **baseDir** - path to your static resources that you want to version.
 By default - *process.cwd()* is used as a root for resources.
 
+
+###Todo
+
+TESTS!

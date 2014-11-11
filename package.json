@@ -25,5 +25,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/gothy/gulp-css-urlversion"
+  },
+  "devDependencies": {
+    "should": "^4.3.0"
   }
 }

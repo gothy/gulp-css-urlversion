@@ -1,3 +1,5 @@
+"use strict";
+
 var path = require('path');
 var crypto = require('crypto');
 var fs = require('fs');

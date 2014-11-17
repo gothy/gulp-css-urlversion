@@ -56,12 +56,12 @@ gulp.task('sass', function () {
 By default - *process.cwd()* is used as a root for root-relative resources.
 
 
-###Todo
-
-TESTS!
-
 
 ### Changelog
+
+####Version 1.1.1
+
+- tests added
 
 ####Version 1.1.0 
 

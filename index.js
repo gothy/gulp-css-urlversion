@@ -32,8 +32,8 @@ module.exports = function(options) {
 
     var incoming = file.contents.toString();
 
-    var outgoing = incoming.replace(/url\(([^\)]+)\)/g, function (str, dirtyUrl) {
-      var url = dirtyUrl.replace(/'|"/g, '').trim();
+    var outgoing = incoming.replace(/url(\([\s]*.*[\s]*\))/g, function (str, dirtyUrl) {
+      var url = dirtyUrl.trim().replace(/^\(/g,'').replace(/\)$/g,'').replace(/'|"/g, '');
       var replaceWithStr = null;
       if (url.indexOf("base64,") > -1 || url.indexOf("http://") > -1 ) {
         replaceWithStr = str; // ignoring base64 and external links

@@ -13,6 +13,7 @@ function md5(data) {
 describe("gulp-css-urlversion", function() {
 
   var ololoJpg = fs.readFileSync(path.join(__dirname, 'fixtures/ololo.jpg'));
+  var alalaPng = fs.readFileSync(path.join(__dirname, 'fixtures/ala)la.png'));
   var stream = null;
 
   beforeEach(function() {
@@ -40,29 +41,41 @@ describe("gulp-css-urlversion", function() {
     }).write(fakeFile);
   });
 
+  it('should replace url() when filename has closing paranthesis in path', function() {
+    var fakeFile = new File({contents: new Buffer(
+      ".rule {background: url(/test/fixtures/ala)la.png);}"
+    )});
+
+    stream.once('data', function(file) {
+      fakeFile.contents.toString().should.equal(
+        ".rule {background: url(/test/fixtures/ala)la.png?v=" + md5(alalaPng.toString()) + ");}"
+      );
+    }).write(fakeFile);
+  });
+
   it('should replace url() with quotes', function() {
     var fakeFile = new File({contents: new Buffer(
       ".rule {background: url('/test/fixtures/ololo.jpg');}\n" +
-      '.rule2 {background: url("/test/fixtures/ololo.jpg");}'
+      '.rule2 {background: url(  "  /test/fixtures/ala)la.png");}'
     )});
 
     stream.once('data', function(file) {
       fakeFile.contents.toString().should.equal(
         ".rule {background: url(/test/fixtures/ololo.jpg?v=" + md5(ololoJpg.toString()) + ");}\n" +
-        ".rule2 {background: url(/test/fixtures/ololo.jpg?v=" + md5(ololoJpg.toString()) + ");}"
+        ".rule2 {background: url(/test/fixtures/ala)la.png?v=" + md5(alalaPng.toString()) + ");}"
       );
     }).write(fakeFile);
   });
 
   it('should replace url() in double background rule', function() {
     var fakeFile = new File({contents: new Buffer(
-      ".rule {background: url(/test/fixtures/ololo.jpg), url('/test/fixtures/ololo.jpg');}"
+      ".rule {background: url(/test/fixtures/ololo.jpg), url('/test/fixtures/ala)la.png');}"
     )});
 
     stream.once('data', function(file) {
       fakeFile.contents.toString().should.equal(
         ".rule {background: url(/test/fixtures/ololo.jpg?v=" + md5(ololoJpg.toString()) + 
-          "), url(/test/fixtures/ololo.jpg?v=" + md5(ololoJpg.toString()) + ");}"
+          "), url(/test/fixtures/ala)la.png?v=" + md5(alalaPng.toString()) + ");}"
       );
     }).write(fakeFile);
   });

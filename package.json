@@ -1,10 +1,10 @@
 {
   "name": "gulp-css-urlversion",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A plugin for gulp.js to inline an md5-based version of url() resources in css files.",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "mocha"
   },
   "keywords": [
     "gulpplugin",

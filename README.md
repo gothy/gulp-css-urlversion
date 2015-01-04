@@ -59,6 +59,11 @@ By default - *process.cwd()* is used as a root for root-relative resources.
 
 ### Changelog
 
+####Version 1.1.2
+
+- handling closing paranthesis in url()s path to fix #1. Thanks @flftfqwxf :)
+- tests updated
+
 ####Version 1.1.1
 
 - tests added

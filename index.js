@@ -32,12 +32,9 @@ module.exports = function(options) {
 
     var incoming = file.contents.toString();
 
-    var outgoing = incoming.replace(/url(\([\s]*(["'])[^\2\s]*\2\))|url(\([\s]*[^'"\s]*\))/g, function (str, dirtyUrl) {
-        if (dirtyUrl===undefined) {
-            dirtyUrl=arguments[3];
-        }
-      var url = dirtyUrl.trim().replace(/^\(/g,'').replace(/\)$/g,'').replace(/'|"/g, '');
-      var replaceWithStr = null;
+    var outgoing = incoming.replace(/url(\([\s]*[^;,}]*[\s]*\))/g, function (str, dirtyUrl) {
+          var url = dirtyUrl.replace(/^\(/g,'').replace(/\)$/g,'').replace(/^['"]/, '').replace(/['"]$/g, '').trim();
+          var replaceWithStr = null;
       if (url.indexOf("base64,") > -1 || url.indexOf("http://") > -1 ) {
         replaceWithStr = str; // ignoring base64 and external links
       } else {

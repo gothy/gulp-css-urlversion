@@ -74,7 +74,7 @@ describe("gulp-css-urlversion", function() {
 
     stream.once('data', function(file) {
       fakeFile.contents.toString().should.equal(
-        ".rule {background: url(/test/fixtures/ololo.jpg?v=" + md5(ololoJpg.toString()) + 
+        ".rule {background: url(/test/fixtures/ololo.jpg?v=" + md5(ololoJpg.toString()) +
           "), url(/test/fixtures/ala)la.png?v=" + md5(alalaPng.toString()) + ");}"
       );
     }).write(fakeFile);
@@ -87,7 +87,7 @@ describe("gulp-css-urlversion", function() {
 
     stream.once('data', function(file) {
       fakeFile.contents.toString().should.equal(
-        ".rule {background: url(/test/fixtures/ololo.jpg?v=" + md5(ololoJpg.toString()) + 
+        ".rule {background: url(/test/fixtures/ololo.jpg?v=" + md5(ololoJpg.toString()) +
           "), url(./test/fixtures/ololo.jpg?v=" + md5(ololoJpg.toString()) + ");}"
       );
     }).write(fakeFile);

@@ -17,7 +17,7 @@ Example css/sass source:
     background: url(/images/bg-royal-button.png) 0 0 no-repeat;
     width: 14px;
     height: 14px;
-    cursor: pointer; 
+    cursor: pointer;
 }
 ```
 
@@ -59,6 +59,10 @@ By default - *process.cwd()* is used as a root for root-relative resources.
 
 ### Changelog
 
+####Version 1.1.3
+
+- ignore `https://` urls also
+
 ####Version 1.1.2
 
 - handling closing paranthesis in url()s path to fix #1. Thanks @flftfqwxf :)
@@ -68,7 +72,7 @@ By default - *process.cwd()* is used as a root for root-relative resources.
 
 - tests added
 
-####Version 1.1.0 
+####Version 1.1.0
 
 - Support for relative defined url()s
 - Support for multiple background declarations

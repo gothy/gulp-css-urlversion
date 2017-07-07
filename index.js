@@ -48,9 +48,6 @@ module.exports = function(options) {
         if (url.indexOf('/') === 0) { // root-relative url
           imagePath = path.join(baseDir, url);
         } else { // this path should be threated as relative
-          gutil.log(
-            PLUGIN_NAME + ': Using a relative path in ' + path.basename(file.path) + ": " + url
-          );
           imagePath = path.resolve(path.dirname(file.path), url);
         }
 

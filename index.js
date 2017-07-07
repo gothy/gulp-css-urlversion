@@ -35,7 +35,7 @@ module.exports = function(options) {
     var outgoing = incoming.replace(/url(\([\s]*[^;,}]*[\s]*\))/g, function (str, dirtyUrl) {
       var url = dirtyUrl.replace(/^\(/g,'').replace(/\)$/g,'').replace(/'|"/g, '').trim();
       var replaceWithStr = null;
-	  var isFont = url.indexOf(".eot") > -1 || url.indexOf(".woff") > -1 || url.indexOf(".ttf") > -1 || url.indexOf(".otf") || url.indexOf(".svg") > -1;
+	  var isFont = url.indexOf(".eot") > -1 || url.indexOf(".woff") > -1 || url.indexOf(".ttf") > -1 || url.indexOf(".otf") > -1|| url.indexOf(".svg") > -1;
       if (
 		isFont
         || url.indexOf("base64,") > -1

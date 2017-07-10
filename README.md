@@ -54,6 +54,8 @@ gulp.task('sass', function () {
 
 **baseDir** - root for root-relative url() resources that you want to version.
 By default - *process.cwd()* is used as a root for root-relative resources.
+**hashLength** - specify the length of the hash to append to the URL.
+By default the full hash length, 32 characters, is used.
 
 
 

@@ -14,6 +14,8 @@ describe("gulp-css-urlversion", function() {
 
   var ololoJpg = fs.readFileSync(path.join(__dirname, 'fixtures/ololo.jpg'));
   var alalaPng = fs.readFileSync(path.join(__dirname, 'fixtures/ala)la.png'));
+  var someFont = fs.readFileSync(path.join(__dirname, 'fixtures/somefont.ttf'));
+  var someSvg = fs.readFileSync(path.join(__dirname, 'fixtures/somesvg.svg'));
   var stream = null;
 
   beforeEach(function() {
@@ -56,13 +58,13 @@ describe("gulp-css-urlversion", function() {
   it('should replace url() with quotes', function() {
     var fakeFile = new File({contents: new Buffer(
       ".rule {background: url('/test/fixtures/ololo.jpg');}\n" +
-      '.rule2 {background: url(  "  /test/fixtures/ala)la.png");}'
+        '.rule2 {background: url(  "  /test/fixtures/ala)la.png");}'
     )});
 
     stream.once('data', function(file) {
       fakeFile.contents.toString().should.equal(
         ".rule {background: url(/test/fixtures/ololo.jpg?v=" + md5(ololoJpg.toString()) + ");}\n" +
-        ".rule2 {background: url(/test/fixtures/ala)la.png?v=" + md5(alalaPng.toString()) + ");}"
+          ".rule2 {background: url(/test/fixtures/ala)la.png?v=" + md5(alalaPng.toString()) + ");}"
       );
     }).write(fakeFile);
   });
@@ -93,8 +95,6 @@ describe("gulp-css-urlversion", function() {
     }).write(fakeFile);
   });
 
-
-
   it('should build root-relative paths with baseDir option', function() {
     var fakeFile = new File({contents: new Buffer(
       ".rule {background: url(/ololo.jpg);}"
@@ -105,6 +105,35 @@ describe("gulp-css-urlversion", function() {
       fakeFile.contents.toString().should.equal(
         ".rule {background: url(/ololo.jpg?v=" + md5(ololoJpg.toString()) + ");}"
       );
+    }).write(fakeFile);
+  });
+
+  it('should NOT ignore fonts and svgs by default', function() {
+    var fakeFile = new File({contents: new Buffer(
+      ".rule {background: url(/test/fixtures/somefont.ttf);}\n" +
+        ".rule2 {background: url(/test/fixtures/somesvg.svg);}"
+    )});
+
+    stream.once('data', function(file) {
+      fakeFile.contents.toString().should.equal(
+        ".rule {background: url(/test/fixtures/somefont.ttf?v=" +
+          md5(someFont.toString()) + ");}\n" +
+          ".rule2 {background: url(/test/fixtures/somesvg.svg?v=" +
+          md5(someSvg.toString()) + ");}"
+      );
+    }).write(fakeFile);
+  });
+
+  it('should ignore fonts and svgs when explicitly declared', function() {
+    var fileCont = ".rule {background: url(/test/fixtures/ololo.ttf);} " +
+      ".rule {background: url(/test/fixtures/alala.svg);}";
+    var fakeFile = new File({contents: new Buffer(
+      fileCont
+    )});
+    var streamWithIgnores = cssUrlVersion({ignoreFonts: true, ignoreSvg : true});
+
+    streamWithIgnores.once('data', function(file) {
+      fakeFile.contents.toString().should.equal(fileCont);
     }).write(fakeFile);
   });
 });

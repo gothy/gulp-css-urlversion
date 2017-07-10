@@ -50,29 +50,36 @@ gulp.task('sass', function () {
 
 ```
 
-###Options
+### Options
 
 **baseDir** - root for root-relative url() resources that you want to version.
 By default - *process.cwd()* is used as a root for root-relative resources.
 
+**ignoreFonts** - ignore links that point to webfont files *since 2.0.0*
+**ignoreSvg** - ignore links that point to .svg files *since 2.0.0*
 
 
 ### Changelog
 
-####Version 1.1.3
+#### Version 2.0.0
+
+- support for Node 6.x and up
+- option for ignoring .svg files and fonts(.eot, .woff, .ttf, .otf)
+
+#### Version 1.1.3
 
 - ignore `https://` urls also
 
-####Version 1.1.2
+#### Version 1.1.2
 
 - handling closing paranthesis in url()s path to fix #1. Thanks @flftfqwxf :)
 - tests updated
 
-####Version 1.1.1
+#### Version 1.1.1
 
 - tests added
 
-####Version 1.1.0
+#### Version 1.1.0
 
 - Support for relative defined url()s
 - Support for multiple background declarations

@@ -9,15 +9,22 @@ var through = require('through2');
 
 var PLUGIN_NAME = 'gulp-css-urlversion';
 
-function md5ify(data) {
+function md5ify(data, hashLength) {
   var hash = crypto.createHash("md5");
   hash.update(data);
-  return hash.digest("hex");
+  var digest = hash.digest("hex");
+  if (hashLength >= digest.length) {
+    return digest;
+  }
+  else {
+    return digest.substr(0, hashLength);
+  }
 }
 
 module.exports = function(options) {
   options = options || {};
   var baseDir = options.baseDir || process.cwd();
+  var hashLength = options.hashLength || 32;
 
   return through.obj(function (file, enc, cb) {
     if (file.isNull()) {
@@ -53,7 +60,7 @@ module.exports = function(options) {
 
         try {
           var idata = fs.readFileSync(imagePath);
-          replaceWithStr = 'url(' + url + "?v=" + md5ify(idata) + ')';
+          replaceWithStr = 'url(' + url + "?v=" + md5ify(idata, hashLength) + ')';
         } catch (err) {
           replaceWithStr = str;
           console.dir(file);

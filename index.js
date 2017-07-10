@@ -18,6 +18,8 @@ function md5ify(data) {
 module.exports = function(options) {
   options = options || {};
   var baseDir = options.baseDir || process.cwd();
+  var ignoreFonts = options.ignoreFonts || false;
+  var ignoreSvg = options.ignoreSvg || false;
 
   return through.obj(function (file, enc, cb) {
     if (file.isNull()) {
@@ -35,21 +37,26 @@ module.exports = function(options) {
     var outgoing = incoming.replace(/url(\([\s]*[^;,}]*[\s]*\))/g, function (str, dirtyUrl) {
       var url = dirtyUrl.replace(/^\(/g,'').replace(/\)$/g,'').replace(/'|"/g, '').trim();
       var replaceWithStr = null;
-      if (
-        url.indexOf("base64,") > -1
+      var isFont = url.indexOf(".eot") > -1
+        || url.indexOf(".woff") > -1
+        || url.indexOf(".ttf") > -1
+        || url.indexOf(".otf") > -1;
+      var isSvg = url.indexOf(".svg") > -1;
+
+      if ((isFont && ignoreFonts)
+        || (isSvg && ignoreSvg)
+        || url.indexOf("base64,") > -1
         || url.indexOf("http://") > -1
         || url.indexOf("https://") > -1
       ) {
-        replaceWithStr = str; // ignoring base64 and external links
+        replaceWithStr = str; // ignoring fonts, base64 and external links
       } else {
+        var filePath = file.path || __filename;
         var imagePath = null;
         if (url.indexOf('/') === 0) { // root-relative url
           imagePath = path.join(baseDir, url);
         } else { // this path should be threated as relative
-          gutil.log(
-            PLUGIN_NAME + ': Using a relative path in ' + path.basename(file.path) + ": " + url
-          );
-          imagePath = path.resolve(path.dirname(file.path), url);
+          imagePath = path.resolve(path.dirname(filePath), url);
         }
 
         try {

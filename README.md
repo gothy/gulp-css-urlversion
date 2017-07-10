@@ -56,6 +56,7 @@ gulp.task('sass', function () {
 By default - *process.cwd()* is used as a root for root-relative resources.
 
 **ignoreFonts** - ignore links that point to webfont files *since 2.0.0*
+
 **ignoreSvg** - ignore links that point to .svg files *since 2.0.0*
 
 

@@ -9,15 +9,22 @@ var through = require('through2');
 
 var PLUGIN_NAME = 'gulp-css-urlversion';
 
-function md5ify(data) {
+function md5ify(data, hashLength) {
   var hash = crypto.createHash("md5");
   hash.update(data);
-  return hash.digest("hex");
+  var digest = hash.digest("hex");
+  if (hashLength >= digest.length) {
+    return digest;
+  }
+  else {
+    return digest.substr(0, hashLength);
+  }
 }
 
 module.exports = function(options) {
   options = options || {};
   var baseDir = options.baseDir || process.cwd();
+  var hashLength = options.hashLength || 32;
 
   return through.obj(function (file, enc, cb) {
     if (file.isNull()) {
@@ -35,26 +42,25 @@ module.exports = function(options) {
     var outgoing = incoming.replace(/url(\([\s]*[^;,}]*[\s]*\))/g, function (str, dirtyUrl) {
       var url = dirtyUrl.replace(/^\(/g,'').replace(/\)$/g,'').replace(/'|"/g, '').trim();
       var replaceWithStr = null;
+	  var isFont = url.indexOf(".eot") > -1 || url.indexOf(".woff") > -1 || url.indexOf(".ttf") > -1 || url.indexOf(".otf") > -1|| url.indexOf(".svg") > -1;
       if (
-        url.indexOf("base64,") > -1
+		isFont
+        || url.indexOf("base64,") > -1
         || url.indexOf("http://") > -1
         || url.indexOf("https://") > -1
       ) {
-        replaceWithStr = str; // ignoring base64 and external links
+        replaceWithStr = str; // ignoring fonts, base64 and external links
       } else {
         var imagePath = null;
         if (url.indexOf('/') === 0) { // root-relative url
           imagePath = path.join(baseDir, url);
         } else { // this path should be threated as relative
-          gutil.log(
-            PLUGIN_NAME + ': Using a relative path in ' + path.basename(file.path) + ": " + url
-          );
           imagePath = path.resolve(path.dirname(file.path), url);
         }
 
         try {
           var idata = fs.readFileSync(imagePath);
-          replaceWithStr = 'url(' + url + "?v=" + md5ify(idata) + ')';
+          replaceWithStr = 'url(' + url + "?v=" + md5ify(idata, hashLength) + ')';
         } catch (err) {
           replaceWithStr = str;
           console.dir(file);

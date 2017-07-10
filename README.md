@@ -50,29 +50,32 @@ gulp.task('sass', function () {
 
 ```
 
-###Options
+### Options
 
-**baseDir** - root for root-relative url() resources that you want to version.
+* **baseDir** - root for root-relative url() resources that you want to version.
 By default - *process.cwd()* is used as a root for root-relative resources.
+
+* **hashLength** - specify the length of the hash to append to the URL.
+By default the full hash length, 32 characters, is used.
 
 
 
 ### Changelog
 
-####Version 1.1.3
+#### Version 1.1.3
 
 - ignore `https://` urls also
 
-####Version 1.1.2
+#### Version 1.1.2
 
 - handling closing paranthesis in url()s path to fix #1. Thanks @flftfqwxf :)
 - tests updated
 
-####Version 1.1.1
+#### Version 1.1.1
 
 - tests added
 
-####Version 1.1.0
+#### Version 1.1.0
 
 - Support for relative defined url()s
 - Support for multiple background declarations

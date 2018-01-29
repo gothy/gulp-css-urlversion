@@ -34,7 +34,7 @@ module.exports = function(options) {
 
     var incoming = file.contents.toString();
 
-    var outgoing = incoming.replace(/url(\([\s]*[^;,}]*[\s]*\))/g, function (str, dirtyUrl) {
+    var outgoing = incoming.replace(/url(\([\s]*[^;,}\)\?]*[\s]*\))/g, function (str, dirtyUrl) {
       var url = dirtyUrl.replace(/^\(/g,'').replace(/\)$/g,'').replace(/'|"/g, '').trim();
       var replaceWithStr = null;
       var isFont = url.indexOf(".eot") > -1

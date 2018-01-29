@@ -64,8 +64,8 @@ module.exports = function(options) {
           replaceWithStr = 'url(' + url + "?v=" + md5ify(idata) + ')';
         } catch (err) {
           replaceWithStr = str;
-          console.dir(file);
           if (typeof options.emitErrors === 'undefined' || options.emitErrors) {
+            console.dir(file);
             this.emit('error', new gutil.PluginError(PLUGIN_NAME, err, {fileName: file.path}));
           }
         }

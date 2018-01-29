@@ -65,7 +65,9 @@ module.exports = function(options) {
         } catch (err) {
           replaceWithStr = str;
           console.dir(file);
-          this.emit('error', new gutil.PluginError(PLUGIN_NAME, err, {fileName: file.path}));
+          if (typeof options.emitErrors === 'undefined' || options.emitErrors) {
+            this.emit('error', new gutil.PluginError(PLUGIN_NAME, err, {fileName: file.path}));
+          }
         }
       }
 

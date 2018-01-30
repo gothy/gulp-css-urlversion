@@ -34,7 +34,7 @@ module.exports = function(options) {
 
     var incoming = file.contents.toString();
 
-    var outgoing = incoming.replace(/url(\([\s]*[^;,}]*[\s]*\))/g, function (str, dirtyUrl) {
+    var outgoing = incoming.replace(/url(\([\s]*[^;,}\)\?]*[\s]*\))/g, function (str, dirtyUrl) {
       var url = dirtyUrl.replace(/^\(/g,'').replace(/\)$/g,'').replace(/'|"/g, '').trim();
       var replaceWithStr = null;
       var isFont = url.indexOf(".eot") > -1
@@ -64,8 +64,10 @@ module.exports = function(options) {
           replaceWithStr = 'url(' + url + "?v=" + md5ify(idata) + ')';
         } catch (err) {
           replaceWithStr = str;
-          console.dir(file);
-          this.emit('error', new gutil.PluginError(PLUGIN_NAME, err, {fileName: file.path}));
+          if (typeof options.emitErrors === 'undefined' || options.emitErrors) {
+            console.dir(file);
+            this.emit('error', new gutil.PluginError(PLUGIN_NAME, err, {fileName: file.path}));
+          }
         }
       }
 
